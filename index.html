@@ -23,21 +23,54 @@
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    <!-- Hero Section -->
+   
     <div id="hero">
       <section class="container">
         <h1 class="hero-title">
-         who?! <span class="text-color-main name">Ayaaz</span>
+          who?! <span class="text-color-main name">Ayaaz</span>
           <br />
-         
         </h1>
-      
       </section>
     </div>
-    <!-- /END Hero Section -->
-  
+ 
+
+ 
+    <div id="files">
+      <h2>Download Your Files</h2>
+      <p>Below are the available files for download:</p>
+
+    
+      <ul id="fileList"></ul>
+    </div>
+
     <script>
-      document.getElementById("year").textContent = new Date().getFullYear()
+     
+      const username = "ayazahmed404";  
+      const repo = "ayaaz"; 
+      const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/files`; 
+
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const fileList = document.getElementById("fileList");
+
+          
+          data.forEach(item => {
+            if (item.type === "file") {  
+              const fileName = item.name;
+              const fileUrl = item.download_url; 
+
+             
+              const li = document.createElement("li");
+              li.innerHTML = `<a href="${fileUrl}" download>${fileName}</a>`;
+              fileList.appendChild(li);
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching files:", error);
+        });
     </script>
   </body>
 </html>
