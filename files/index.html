@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+
+    <title>Class?</title>
+
+  
+    <!-- Add your primary-theme color for the value of content -->
+    <meta name="theme-color" content="#36d1dc" />
+
+    <!-- link tags -->
+    <link rel="preload" as="style" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/main.css" />
+  </head>
+  <body>
+   
+   
+ 
+
+    <div id="files">
+      <h2>Class Files</h2>
+      <p></p>
+
+    
+      <ul id="fileList"></ul>
+    </div>
+
+    <script>
+     
+      const username = "ayazahmed404";  
+      const repo = "ayaaz"; 
+      const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/files`; 
+
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const fileList = document.getElementById("fileList");
+
+          
+          data.forEach(item => {
+            if (item.type === "file") {  
+              const fileName = item.name;
+              const fileUrl = item.download_url; 
+
+             
+              const li = document.createElement("li");
+              li.innerHTML = `<a href="${fileUrl}" download>${fileName}</a>`;
+              fileList.appendChild(li);
+            }
+          });
+        })
+        .catch(error => {
+          console.error("Error fetching files:", error);
+        });
+    </script>
+  </body>
+</html>
