@@ -7,9 +7,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-    <title>Class?</title>
+    <title>Class Files</title>
 
-  
     <!-- Add your primary-theme color for the value of content -->
     <meta name="theme-color" content="#36d1dc" />
 
@@ -18,42 +17,42 @@
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-   
-   
- 
-
     <div id="files">
       <h2>Class Files</h2>
       <p></p>
-
-    
       <ul id="fileList"></ul>
     </div>
 
     <script>
-     
-      const username = "ayazahmed404";  
-      const repo = "ayaaz"; 
+      const username = "ayazahmed404";
+      const repo = "ayaaz";
       const apiUrl = `https://api.github.com/repos/${username}/${repo}/contents/class/files`; 
 
-  
       fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-          const fileList = document.getElementById("fileList");
+          // Debugging: Check what the API returns
+          console.log("GitHub API Response:", data);
 
-          
-          data.forEach(item => {
-            if (item.type === "file") {  
-              const fileName = item.name;
-              const fileUrl = item.download_url; 
+          // Check if the response is an array (it should be)
+          if (Array.isArray(data)) {
+            const fileList = document.getElementById("fileList");
 
-             
-              const li = document.createElement("li");
-              li.innerHTML = `<a href="${fileUrl}" download>${fileName}</a>`;
-              fileList.appendChild(li);
-            }
-          });
+            data.forEach(item => {
+              if (item.type === "file") {  // Handle file items
+                const fileName = item.name;
+                const fileUrl = item.download_url;  // GitHub provides the direct download URL
+
+                // Create a list item for the file link
+                const li = document.createElement("li");
+                li.innerHTML = `<a href="${fileUrl}" download>${fileName}</a>`;
+                fileList.appendChild(li);
+              }
+            });
+          } else {
+            // If the response is not an array, log an error
+            console.error("API response is not an array:", data);
+          }
         })
         .catch(error => {
           console.error("Error fetching files:", error);
